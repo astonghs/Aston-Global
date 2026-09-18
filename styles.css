@@ -5,26 +5,26 @@
    ============================================================ */
 
 :root{
-  --ink:          #1c1412;
-  --primary:      #5c1f24;
-  --primary-dk:   #3d1418;
-  --accent:       #b8874a;
-  --accent-dk:    #8d6a2f;
+  --ink:          #17324D;
+  --primary:      #0756A3;
+  --primary-dk:   #064783;
+  --accent:       #329425;
+  --accent-dk:    #26751D;
 
-  --paper:        #f8f3ea;
-  --paper-2:      #f0e8db;
+  --paper:        #F5FAFD;
+  --paper-2:      #EAF4FB;
   --white:        #ffffff;
-  --muted:        #5c4f4a;
-  --line:         #e4dccf;
-  --line-dk:      #cec3b1;
+  --muted:        #526575;
+  --line:         #D6E4EE;
+  --line-dk:      #B9CEDD;
 
-  --dark-bg:      #3d1418;
-  --footer-bg:    #1a090b;
+  --dark-bg:      #064783;
+  --footer-bg:    #032B50;
   --dark-text:    #ffffff;
-  --dark-body:    #f0e4d8;
-  --dark-label:   #f0c99a;
+  --dark-body:    #E5F1F8;
+  --dark-label:   #8FD27D;
   --dark-link:    #ffffff;
-  --dark-line:    rgba(255,255,255,.15);
+  --dark-line:    rgba(255,255,255,.16);
   --dark-panel:   rgba(255,255,255,.10);
 
   --serif: "Newsreader", Georgia, "Times New Roman", serif;
@@ -76,6 +76,7 @@ p:last-child{ margin-bottom:0; }
 .site-header{ background:var(--paper); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:100; }
 .header-inner{ display:flex; align-items:center; justify-content:space-between; gap:24px; padding:16px 0; position:relative; }
 .brand{ display:flex; align-items:center; gap:12px; }
+.brand-logo{ width:210px; height:58px; object-fit:contain; object-position:left center; }
 .brand-mark{
   width:40px; height:40px; background:var(--primary); border-radius:3px;
   display:grid; place-items:center; color:#fff; font-family:var(--serif);
