@@ -83,8 +83,8 @@ p:last-child{ margin-bottom:0; }
   font-size:1.35rem; font-weight:600; line-height:1; flex:none;
 }
 .brand-text{ display:flex; flex-direction:column; }
-.brand-name{ font-family:var(--serif); font-size:1.15rem; font-weight:600; color:var(--primary-dk); line-height:1.15; }
-.brand-sub{ font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+.brand-name{ font-family:var(--serif); font-size:1.45rem; font-weight:800; color:var(--primary-dk); line-height:1.15; }
+.brand-sub{ font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:700; }
 
 .nav{ display:flex; align-items:center; gap:26px; }
 .nav a{ font-size:.92rem; font-weight:500; color:var(--ink); }
