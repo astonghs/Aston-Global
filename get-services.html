@@ -250,5 +250,136 @@ document.getElementById('year').textContent = new Date().getFullYear();
   <a class="btn btn-accent sticky-call" href="tel:+14192458113">Call (419) 245-8113</a>
 </div>
 
+<div class="ag-chatbot" id="ag-chatbot">
+  <button type="button" class="ag-chat-toggle" aria-expanded="false" aria-controls="ag-chat-panel" aria-label="Open Ava, our chat assistant">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-1 4 8.5 8.5 0 0 1-7.5 4.5 8.4 8.4 0 0 1-4-1L3 20l1-5.5a8.4 8.4 0 0 1-1-4A8.5 8.5 0 0 1 11.5 3a8.5 8.5 0 0 1 9.5 8.5z"/></svg>
+  </button>
+  <div class="ag-chat-panel" id="ag-chat-panel" hidden role="dialog" aria-label="Ava, Aston Global chat assistant">
+    <div class="ag-chat-head">
+      <span>Ava &middot; Aston Global</span>
+      <button type="button" class="ag-chat-close" aria-label="Close chat">&times;</button>
+    </div>
+    <div class="ag-chat-log" role="log" aria-live="polite"></div>
+    <div class="ag-chat-chips"></div>
+    <form class="ag-chat-form">
+      <input type="text" class="ag-chat-input" placeholder="Type a question…" aria-label="Type a question">
+      <button type="submit" class="ag-chat-send" aria-label="Send">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 18-8-8 18-2-8-8-2z"/></svg>
+      </button>
+    </form>
+    <p class="ag-chat-note">Automated answers based on common questions. For anything specific, call <a href="tel:+14192458113">(419) 245-8113</a>.</p>
+  </div>
+</div>
+<script>
+(function(){
+  var KB = [
+    { q: "What services do you offer?", k: ["service","services","offer","provide","help with"],
+      a: "We offer Homemaker Personal Care, Residential Respite, Remote Support, Supported Living, Shared Living, Participant-Directed HPC, and Non-Medical Transportation. You can see details on our <a href=\"services.html\">Services page</a>." },
+    { q: "Who qualifies for services?", k: ["qualify","eligib","eligible","who can","requirements"],
+      a: "Eligibility is set by the funding program, not by us. For developmental disabilities, it's usually determined through your county Board of Developmental Disabilities. Older adults are typically assessed through programs like PASSPORT. Not sure where to start? Call us at (419) 245-8113 and we'll point you in the right direction." },
+    { q: "What does it cost?", k: ["cost","price","pay","fee","expensive","insurance","waiver"],
+      a: "Most of our services are paid for through Ohio programs such as DODD waivers and PASSPORT, not billed directly to families. Whether any cost-share applies depends on your program, and your SSA or case manager can confirm." },
+    { q: "How do referrals work?", k: ["referral","refer","how do i start","ssa","get started","sign up"],
+      a: "You can reach out yourself through our <a href=\"get-services.html\">Get Services form</a> or by calling us, or your Service & Support Administrator can refer you. We review the request, call to learn what you need, confirm authorization, and coordinate with your team before support begins." },
+    { q: "How fast can care start?", k: ["fast","soon","quick","start date","how long","wait"],
+      a: "We respond to every request within one business day. When services actually begin depends on your authorization and matching you with the right staff. Call (419) 245-8113 and we'll tell you where things stand." },
+    { q: "What areas do you serve?", k: ["area","location","where","county","counties","toledo","ohio"],
+      a: "We're based in Toledo and serve individuals and families throughout Ohio. Call us at (419) 245-8113 to confirm coverage in your county." },
+    { q: "Can I choose my own provider?", k: ["choose","switch provider","change provider","pick"],
+      a: "Yes. You have the right to choose the provider that's the best fit for you or your family member. We're glad to talk through how we work so you can decide." },
+    { q: "How do I contact you?", k: ["contact","phone","call","email","reach you","number"],
+      a: "Call our office at (419) 245-8113 or our mobile line at (240) 701-9330, or email admin@astonghs.com. You can also use our <a href=\"contact.html\">Contact page</a>." },
+    { q: "Are you hiring?", k: ["job","career","hire","hiring","work for","employment","apply"],
+      a: "Yes, we're often looking for compassionate Direct Support Professionals. Visit our <a href=\"careers.html\">Careers page</a> for openings and how to apply." },
+    { q: "I'm an SSA making a referral", k: ["ssa referral","referral form","refer someone","professional"],
+      a: "You can find our referral process and a downloadable referral form on our <a href=\"professionals.html\">For SSAs page</a>." }
+  ];
+  var FALLBACK = "I'm not able to answer that one. The fastest way to get a real answer is to call us at <a href=\"tel:+14192458113\">(419) 245-8113</a> or use our <a href=\"get-services.html\">Get Services form</a>.";
+  var GREETING = "Hi, I'm Ava, the Aston Global assistant. I can answer quick questions about our services, eligibility, cost, referrals, and more. Tap a question below or type your own.";
+
+  function score(text, item){
+    text = text.toLowerCase();
+    var s = 0;
+    item.k.forEach(function(k){ if(text.indexOf(k) !== -1) s += k.length; });
+    return s;
+  }
+  function bestAnswer(text){
+    var best = null, bestScore = 0;
+    KB.forEach(function(item){
+      var s = score(text, item);
+      if(s > bestScore){ bestScore = s; best = item; }
+    });
+    return bestScore > 0 ? best.a : FALLBACK;
+  }
+
+  var root = document.getElementById('ag-chatbot');
+  if(!root) return;
+  var toggle = root.querySelector('.ag-chat-toggle');
+  var panel = root.querySelector('.ag-chat-panel');
+  var closeBtn = root.querySelector('.ag-chat-close');
+  var log = root.querySelector('.ag-chat-log');
+  var form = root.querySelector('.ag-chat-form');
+  var input = root.querySelector('.ag-chat-input');
+  var chipsWrap = root.querySelector('.ag-chat-chips');
+  var opened = false;
+
+  function addMsg(html, who){
+    var div = document.createElement('div');
+    div.className = 'ag-msg ag-msg-' + who;
+    div.innerHTML = html;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function buildChips(){
+    chipsWrap.innerHTML = '';
+    KB.slice(0, 6).forEach(function(item){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'ag-chip';
+      b.textContent = item.q;
+      b.addEventListener('click', function(){
+        addMsg(item.q, 'user');
+        setTimeout(function(){ addMsg(item.a, 'bot'); }, 300);
+      });
+      chipsWrap.appendChild(b);
+    });
+  }
+
+  function openChat(){
+    panel.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+    if(!opened){
+      opened = true;
+      addMsg(GREETING, 'bot');
+      buildChips();
+    }
+    input.focus();
+  }
+  function closeChat(){
+    panel.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.focus();
+  }
+
+  toggle.addEventListener('click', function(){
+    if(panel.hidden) openChat(); else closeChat();
+  });
+  closeBtn.addEventListener('click', closeChat);
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && !panel.hidden) closeChat();
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var text = input.value.trim();
+    if(!text) return;
+    addMsg(text.replace(/</g,'&lt;'), 'user');
+    input.value = '';
+    setTimeout(function(){ addMsg(bestAnswer(text), 'bot'); }, 300);
+  });
+})();
+</script>
+
 </body>
 </html>
