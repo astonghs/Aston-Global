@@ -94,7 +94,7 @@ p:last-child{ margin-bottom:0; }
   font-size:1.35rem; font-weight:600; line-height:1; flex:none;
 }
 .brand-text{ display:flex; flex-direction:column; white-space:nowrap; }
-.brand-name{ font-family:var(--serif); font-size:1.35rem; font-weight:800; color:var(--primary-dk); line-height:1.15; }
+.brand-name{ font-family:var(--serif); font-size:1.35rem; font-weight:900; color:var(--primary-dk); line-height:1.15; }
 .brand-sub{ font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:700; }
 
 .nav{ display:flex; align-items:center; gap:20px; white-space:nowrap; }
@@ -265,7 +265,10 @@ section{ padding:80px 0; }
 
 @media (max-width: 1000px){
   .nav{ display:none; }
-  .menu-toggle{ display:block; }
+  .menu-toggle{ display:block; position:absolute; right:0; top:50%; transform:translateY(-50%); }
+  .header-inner{ justify-content:center; }
+  .brand-name{ font-size:1.55rem; }
+  .brand-sub{ font-size:.75rem; }
   .nav.open{
     display:flex; flex-direction:column; align-items:flex-start; gap:18px;
     position:absolute; top:100%; left:0; right:0;
