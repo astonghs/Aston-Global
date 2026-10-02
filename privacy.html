@@ -34,7 +34,6 @@
     </nav>
     <div class="header-actions">
       <a class="header-phone" href="tel:+14192458113">(419) 245-8113</a>
-      <a class="btn btn-primary" href="get-services.html">Get Services</a>
       <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="nav">Menu</button>
     </div>
   </div>
@@ -294,6 +293,16 @@ document.getElementById('year').textContent = new Date().getFullYear();
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && !panel.hidden) closeChat();
   });
+  document.addEventListener('click', function(e){
+    if(panel.hidden) return;
+    if(panel.contains(e.target) || toggle.contains(e.target)) return;
+    closeChat();
+  });
+  document.addEventListener('touchstart', function(e){
+    if(panel.hidden) return;
+    if(panel.contains(e.target) || toggle.contains(e.target)) return;
+    closeChat();
+  }, {passive:true});
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
